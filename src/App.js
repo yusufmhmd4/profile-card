@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react"; //importing hooks
+import ProfileCard from "./components/ProfileCard";
+import "./App.css";
 
-function App() {
+const App = () => {
+  const [profileData, setProfileData] = useState(null); //initializing state value null
+
+  useEffect(() => {
+    //calling api using useEffect hook
+    fetchProfileData();
+  }, []);
+
+  async function fetchProfileData() {
+    const url = `https://randomuser.me/api/?page=1&results=1&seed=abc`;
+    const fetchData = await fetch(url);
+    const response = await fetchData.json();
+    setProfileData(response.results[0]); // updating state value
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {/* Rendering ProfileCard Component */}
+      {profileData && <ProfileCard profileData={profileData} />}
     </div>
   );
-}
+};
 
 export default App;
